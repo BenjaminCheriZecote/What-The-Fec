@@ -1,0 +1,36 @@
+<%- include('partials/header')  %>
+    
+<!-- MAIN -->
+<main class="main main-testingPage" id="main-test">
+    <div class="main-testingPage-container">
+        <form method="post" action="/test" id="main-testingPage-form">
+            <header>File uploader JavaScript</header>
+            <i class='bx bx-cloud-download'></i>
+            <!-- <label for="file"> Test import -->
+                <input id="file" type="file" accept=".txt, .csv" hidden>
+            <!-- </label> -->
+            <button hidden id="main-testingPage-form--btn">Envoyer</button>
+        </form>
+        <section class="progress-area">
+            <!-- <li class="row">
+                <i class='bx bxs-file-blank'></i>
+                <div class="content">
+                    <div class="details">
+                        <span class="name">fec_test.txt</span>
+                        <span class="percent">50%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                </div>
+                <p>Télécharger</p>
+                </li> -->
+            
+        </section>
+        <p class="testA"></p>
+    </div>
+
+</main>
+
+
+<%- include('partials/footer')  %>

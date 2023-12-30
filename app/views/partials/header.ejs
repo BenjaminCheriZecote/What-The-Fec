@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What the FEC!</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <!-- <link rel="stylesheet" href="/static/css/style.css">
+    <script type="module" defer src="/static/js/front.js"></script> -->
+    <% if (locals.testPage) { %>
+        <script type="module" defer src="/static/js/testingPage/testingPage.js"></script>
+        <link rel="stylesheet" href="/static/css/style2.css">
+    <% } else { %>
+        <link rel="stylesheet" href="/static/css/style.css">
+        <script type="module" defer src="/static/js/homePage/homePage.js"></script>
+    <% } %>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script defer src="https://cdn.jsdelivr.net/npm/xlsx-populate@1.19.1/browser/xlsx-populate.min.js"></script>
+
+</head>
+<body id="body" class="body body-background">
+<!-- HEADER -->
+<header class="header">
+    <section class="header_section">
+        <h1 id="header_section-h1">What the FEC!</h1>
+        <nav>
+            <ul class="header_section_nav-ul">
+                <li class="header_section_nav-ul--li"><a href="/">Acceuil</a></li>
+                <li class="header_section_nav-ul--li"><a href="/testingFec">Tester mon FEC</a></li>
+                <li class="header_section_nav-ul--li"><a href="/sort">Conformité légale</a></li>
+            </ul>
+        </nav>
+    </section>
+
+</header>
