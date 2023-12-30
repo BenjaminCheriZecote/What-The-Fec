@@ -32,17 +32,34 @@ const file = {
 
                     file.createListFile(clientFile.name, textContent);
                     
-                    
-                    
-                    const workbook = XLSX.utils.book_new();
+                    // const workbook = XLSX.utils.book_new();
+                    // const wb = new ExcelJS.Workbook();
+                    // const ws = wb.addWorksheet('Feuille1');
                     const lines = textContent.split('\n');
                     const data = lines.map(line => line.split('\t'));
                     const body = data.slice(1)
-                    const worksheet = XLSX.utils.aoa_to_sheet(data);
-                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
                     console.log("Body :", body);
+                    
 
-                    // XLSX.writeFile(workbook, "WhatTheFEC.xlsx");
+                    
+
+                    // const worksheet = XLSX.utils.aoa_to_sheet(data);
+                    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
+
+
+                    // Ajouter des données à la feuille de calcul
+                    // ws.addRows(data);
+
+                    // const cell = ws.getCell('A1');
+                    // cell.font = {
+                    //     color: { argb: 'FFFF0000' } // Rouge
+                    // };
+
+                    // ...
+                    // Enregistrez le fichier Excel
+                    // const buffer = await wb.xlsx.writeBuffer();
+                    // saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'WhatTheFECT2.xlsx');
+
                 });
                 reader.readAsText(clientFile); // A remplacer par l'aperçu du fichier excel  
 
@@ -108,27 +125,41 @@ const file = {
         });
     },
 
-    uploadExcelFileResult: (textFile, nameFile) => {
-        const workbook = XLSX.utils.book_new();
+    uploadExcelFileResult: async (textFile, nameFile) => {
+        // const workbook = XLSX.utils.book_new();
+        // const worksheet = XLSX.utils.aoa_to_sheet(data);
+        // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
+
         // scriptControl : spérateur point virgule
+
+        const wb = new ExcelJS.Workbook();
+        const ws = wb.addWorksheet('Feuille1');
         const lines = textFile.split('\n');
         const data = lines.map(line => line.split('\t'));
+        const header = data[0];
         const body = data.slice(1);
-        // scriptControl : triage num piece
+
+        // triage par Num pièce
+        // triage par code journal To do
+        body.sort((a, b) => a[2] - b[2]);
+        // body.unshift(header);
+        ws.addRows(body);
+
         // 1. recherche des numéro de piece vide
-        // scriptControl.searchEmptyNumPiece(body);
+        scriptControl.searchEmptyNumPiece(ws);
 
         // 2. recherche des pieces isolées
+        // scriptControl.searchAlonePiece(ws);
+
         // 3. control des dates entre ecritureDate et pieceDate
+        scriptControl.checkDatesColumns(ws);
+        
         // 4. control des dates sur la meme piece
         // 5. différence code journal sur meme piece
         // 6. déséquilibre débit crédit
 
-        const worksheet = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
-
-
-        XLSX.writeFile(workbook, `WTF-${nameFile}.xlsx`);
+        const buffer = await wb.xlsx.writeBuffer();
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `WTFEC-${nameFile}.xlsx`);
     }
 }
 

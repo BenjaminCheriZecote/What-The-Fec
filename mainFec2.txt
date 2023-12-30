@@ -1,6 +1,6 @@
 JournalCode	JournalLib	EcritureNum	EcritureDate	CompteNum	CompteLib	CompAuxNum	CompAuxLib	PieceRef	PieceDate	EcritureLib	Debit	Credit	EcritureLet	DateLet	ValidDate	Montantdevise	Idevise
 ac	Achats	5	20210125	401000	Fournisseurs divers	401SNC	Sncf	9612181851	20210127	Sncf 	0,00	39,00	Q	20210213	20220401		
-ac	Achats	1	20210127	625100	Voyages et deplacements			9612181851	20210127	Sncf 	39,00	0,00			20220401		
+ac	Achats		20210127	625100	Voyages et deplacements			9612181851	20210127	Sncf 	39,00	0,00			20220401		
 ac	Achats	2	20210128	401000	Fournisseurs divers	401DIV	Fournisseurs divers	9612181837	20210128	GALERIE LAFAYETTE	0,00	6,30	BG	20211228	20220401		
 ac	Achats	2	20210128	625600	Missions			9612181837	20210128	GALERIE LAFAYETTE	5,73	0,00			20220401		
 ac	Achats	2	20210128	445660	Tva déductible sur autres biens et services			9612181837	20210128	GALERIE LAFAYETTE	0,57	0,00			20220401		
