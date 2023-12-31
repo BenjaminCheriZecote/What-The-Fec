@@ -2,7 +2,8 @@
 
 .body {
     font-family: 'Poppins', sans-serif;
-    background-color: rgb(241, 242, 244, 0.8);
+    background-color: #f1f2f4cc;
+    background: linear-gradient(#f1f2f4cc, #ffffff);
     /* padding:0rem 5rem; */
     /* background-image: ; */
 }
@@ -12,14 +13,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding:1rem 1rem 2.5rem 1rem;
+    padding:1rem 1rem 1rem 1rem;
     
 }
 
 .header_section_nav-ul {
     display: flex;
     flex-flow: row nowrap;
-    gap:1rem;
+    gap:1.5rem;
 }
 
 
@@ -29,6 +30,9 @@
 
 .header_section_nav-ul--li a, .header_section h1 {
     color: rgba(255, 0, 0, 0.8);
+    color:rgb(120, 18, 18);
+    /* color: #0808cd; */
+    /* color: #e74141; */
     font-weight: 500;
     text-decoration: none;
 }
@@ -39,6 +43,7 @@
     border:1px white solid;
     /* background-color: white; */
     opacity: initial;
+    padding: 2rem;
 }
 
 
@@ -47,15 +52,13 @@
     flex-flow: column;
     justify-content: space-between;
     width:60%;
-    /* height:30rem; */
     margin: 10rem auto;
-    /* border:1px black solid; */
     gap:1rem;
-    /* align-items: center; */
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     border-radius: 0.8rem;
+    box-shadow:5px 5px 15px 5px rgb(205, 205, 205);
     padding:1rem;
-    
+    transition: .4s ease-in-out;
   }
 
   #main-testingPage-form {
@@ -67,6 +70,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+
+  .main-testingPage-container:hover {
+    scale: 0.99;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   }
 
   .progress-area {
@@ -125,7 +133,6 @@
     font-size:1rem;
   }
 
-
   .hidden {
     display: none;
   }
@@ -134,3 +141,40 @@
     overflow-y: scroll;
     /* overflow-x: scroll; */
   }
+
+  .btn {
+    padding: 1rem 2rem;
+    font-weight: 700;
+    background: rgb(255, 255, 255);
+    color: rgb(226, 43, 43);
+    border-radius: .5rem;
+    border-bottom: 2px solid rgb(226, 43, 43);
+    border-right: 2px solid rgb(226, 43, 43);
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    transition-duration: 1s;
+    transition-property: border-top, border-left, border-bottom, border-right, box-shadow;
+   }
+   
+   .btn:hover {
+    border-top: 2px solid rgb(116, 23, 37);
+    border-left: 2px solid rgb(226, 43, 107);
+    border-bottom: 2px solid rgb(238, 103, 123);
+    border-right: 2px solid rgb(238, 103, 103);
+    box-shadow: rgba(85, 13, 13, 0.4) 5px 5px, rgba(85, 13, 13, 0.3) 10px 10px, rgba(85, 13, 13, 0.2) 15px 15px;
+   }
+
+
+   .footer {
+    text-align: center;
+    padding:2rem;
+   }
+   .footer {
+    text-align: center;
+    padding:2rem;
+    background-color: rgb(85, 13, 13);
+    color: white;
+    position: fixed;
+    bottom:0;
+    width:100%;
+}

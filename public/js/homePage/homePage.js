@@ -21,14 +21,28 @@ const app = {
                 headerH1Element.style.fontFamily = "'Poppins', sans-serif";
                 headerH1Element.style.fontWeight = "500";
                 headerH1Element.classList.add('scrollUppercase');
+                
             };
     
             if (window.scrollY <= 700) {
                 menuNavigationElements[1].style.color = "red";
+                menuNavigationElements[1].addEventListener('mouseover', () => {
+                    menuNavigationElements[1].style.color = "white";
+                })
+                menuNavigationElements[1].addEventListener('mouseleave', () => {
+                    menuNavigationElements[1].style.color = "red";
+                })
             };
         
             if (window.scrollY >= 700) {
-                menuNavigationElements[1].style.color = "#781212";
+                // menuNavigationElements[1].style.color = "#781212";
+                menuNavigationElements[1].style.color = "#550d0d";
+                menuNavigationElements[1].addEventListener('mouseover', () => {
+                    menuNavigationElements[1].style.color = "white";
+                })
+                menuNavigationElements[1].addEventListener('mouseleave', () => {
+                    menuNavigationElements[1].style.color = "#550d0d";
+                })
             };
         });
     },

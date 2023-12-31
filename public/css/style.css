@@ -36,18 +36,20 @@
     margin-right: 2rem;
 } 
 
-
-
 .header_section_nav-ul {
     display: flex;
     flex-flow: row nowrap;
-    gap:1rem;
+    gap:1.5rem;
 }
 
 .header_section_nav-ul--li a {
     color: rgb(255, 0, 0);
     font-weight: 500;
     text-decoration: none;
+    background: transparent;
+    position: relative;
+    transition: all 1s;
+    overflow: hidden;
 }
 
 
@@ -81,8 +83,6 @@
     justify-content: center;
     gap:2rem;
     text-align: center;
-    /* background-color: aqua; */
-    
 }
 
 .main-section-ul--li {
@@ -100,8 +100,8 @@
 .main-section h2 {
     font-size: 2rem;
     font-weight: 600;
-    color:rgb(120, 18, 18);
-    /* color: #56688c; */
+    color:rgb(120, 18, 18);;
+    color: rgb(85, 13, 13);
 }
 
 /* .test {
@@ -111,8 +111,11 @@
 .bx {
     font-size: 2rem;
     color: #bccae2;
-    color:rgb(120, 18, 18);
+    /* color:rgb(120, 18, 18); */
+    /* color: #274580; */
     /* color: #4969a9; */
+    color:rgb(120, 18, 18);
+    color: rgb(200, 34, 34);
 }
 
 
@@ -122,15 +125,13 @@
     font-weight: 500;
 }
 
-.footer {
-    text-align: center;
-    padding:2rem;
-}
-
 .main-section-ul--li:hover {
     background-color: rgb(85, 13, 13);
     /* background-color: #f1f2f4; */
+    /* background-color: #122b5e; */
+    /* color: #274580; */
     color: white;
+    /* color: black; */
     /* color:rgb(120, 18, 18); */
     transform: translateY(-2rem);
 }
@@ -139,15 +140,21 @@
     background-color: #f1f2f4;
     /* border-bottom: 1px red solid; */
     box-shadow: 0px 4px 3px 0px rgb(120, 18, 18);
+    box-shadow: 0px 4px 3px 0px #274580;
+    box-shadow: 0px 4px 3px 0px #b0bbcf;
+    box-shadow: 0px 4px 3px 0px rgb(125, 93, 93);
+    
 }
 
 .scrollUppercase {
     text-transform: uppercase;
 }
 
-.test {
+/* .test {
     color: white;
-}
+    color: #274580;
+    color: black;
+} */
 
 @media (max-width: 781px) {
     /* -> dès que la taille d’écran au moins 576px, on change de couleur */
@@ -178,22 +185,34 @@
 
   }
 
-
-
-  /* TESTING PAGE  */
-
-  .backgroundColorBody {
-    background-color: #f1f2f4;
+  .header_section_nav-ul--li a:hover {
+    color: white;
+  }
+  
+  .header_section_nav-ul--li a::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    top: 0;
+    left: -5px;
+    /* transform: skewX(1deg); */
+    border-radius: 0.3rem;
+    background-color: rgb(255, 0, 0);
+    z-index: -1;
+    transition: all 1s;
+  }
+  
+  .header_section_nav-ul--li a:hover::before {
+    width: 115%;
   }
 
-  /* #main-testingPage-form {
-    display: block;
-    width:50%;
-    height:20rem;
-    margin: 20rem auto;
-    border:1px black solid;
-
-  } */
+  .footer {
+    text-align: center;
+    padding:2rem;
+    background-color: rgb(85, 13, 13);
+    color: white;
+}
 
 
 

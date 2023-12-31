@@ -33,27 +33,29 @@ const file = {
                     file.createListFile(clientFile.name, textContent);
                     
                     // const workbook = XLSX.utils.book_new();
-                    // const wb = new ExcelJS.Workbook();
-                    // const ws = wb.addWorksheet('Feuille1');
+
+                    const wb = new ExcelJS.Workbook();
+                    const ws = wb.addWorksheet('Feuille1');
+
                     const lines = textContent.split('\n');
                     const data = lines.map(line => line.split('\t'));
                     const body = data.slice(1)
                     console.log("Body :", body);
                     
-
-                    
-
                     // const worksheet = XLSX.utils.aoa_to_sheet(data);
                     // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
 
 
                     // Ajouter des données à la feuille de calcul
-                    // ws.addRows(data);
+                    ws.addRows(body);
 
-                    // const cell = ws.getCell('A1');
-                    // cell.font = {
-                    //     color: { argb: 'FFFF0000' } // Rouge
-                    // };
+                    // console.log(ws._rows)
+
+                    // console.log(ws._rows[0]._cells)
+
+                    // console.log(ws._rows[0]._cells[2]._value.value) // num pièce
+
+                    
 
                     // ...
                     // Enregistrez le fichier Excel
@@ -101,6 +103,7 @@ const file = {
 
         const buttonUploaderElement = document.createElement('button');
         buttonUploaderElement.textContent = 'Télécharger';
+        buttonUploaderElement.classList.add('btn');
 
         file.listenerButtonUploader(buttonUploaderElement, textFile, nameFile); // écoute les clicks sur les bouton Télécharger
 
@@ -139,9 +142,14 @@ const file = {
         const header = data[0];
         const body = data.slice(1);
 
-        // triage par Num pièce
-        // triage par code journal To do
-        body.sort((a, b) => a[2] - b[2]);
+        // triage par Num pièce et code journal
+        body.sort((a, b) => { 
+            if (a[0] === b[0]) {
+                return a[2] - b[2];
+            } else {
+                return a[0].localeCompare(b[0]);
+            }
+        } );
         // body.unshift(header);
         ws.addRows(body);
 
@@ -149,14 +157,16 @@ const file = {
         scriptControl.searchEmptyNumPiece(ws);
 
         // 2. recherche des pieces isolées
-        // scriptControl.searchAlonePiece(ws);
+        scriptControl.searchAlonePiece(ws);
 
         // 3. control des dates entre ecritureDate et pieceDate
         scriptControl.checkDatesColumns(ws);
-        
+
         // 4. control des dates sur la meme piece
         // 5. différence code journal sur meme piece
+
         // 6. déséquilibre débit crédit
+        // scriptControl.checkBalancePiece(ws);
 
         const buffer = await wb.xlsx.writeBuffer();
         saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `WTFEC-${nameFile}.xlsx`);
