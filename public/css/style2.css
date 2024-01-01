@@ -140,27 +140,33 @@
   .testA {
     overflow-y: scroll;
     /* overflow-x: scroll; */
+    padding:2rem;
+    margin-bottom: 4rem;
+    /* border:1px black solid; */
   }
 
   .btn {
-    padding: 1rem 2rem;
-    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    /* padding: 1rem; */
+    /* font-weight: 700; */
     background: rgb(255, 255, 255);
-    color: rgb(226, 43, 43);
+    /* color: rgb(85, 13, 13); */
     border-radius: .5rem;
-    border-bottom: 2px solid rgb(226, 43, 43);
-    border-right: 2px solid rgb(226, 43, 43);
+    /* border-bottom: 2px solid rgb(85, 13, 13);
+    border-right: 2px solid rgb(85, 13, 13);
     border-top: 2px solid white;
-    border-left: 2px solid white;
+    border-left: 2px solid white; */
+    border:1px black solid;
     transition-duration: 1s;
     transition-property: border-top, border-left, border-bottom, border-right, box-shadow;
    }
    
    .btn:hover {
-    border-top: 2px solid rgb(116, 23, 37);
-    border-left: 2px solid rgb(226, 43, 107);
-    border-bottom: 2px solid rgb(238, 103, 123);
-    border-right: 2px solid rgb(238, 103, 103);
+    color: rgb(85, 13, 13);
+    border-top: 1px solid rgb(116, 23, 37);
+    border-left: 1px solid rgb(85, 13, 13);
+    border-bottom: 1px solid rgb(85, 13, 13);
+    border-right: 1px solid rgb(85, 13, 13);
     box-shadow: rgba(85, 13, 13, 0.4) 5px 5px, rgba(85, 13, 13, 0.3) 10px 10px, rgba(85, 13, 13, 0.2) 15px 15px;
    }
 
@@ -168,13 +174,9 @@
    .footer {
     text-align: center;
     padding:2rem;
-   }
-   .footer {
-    text-align: center;
-    padding:2rem;
-    background-color: rgb(85, 13, 13);
+    background-color: rgb(59, 7, 7);
     color: white;
-    position: fixed;
+    /* position: fixed;
     bottom:0;
-    width:100%;
+    width:100%; */
 }

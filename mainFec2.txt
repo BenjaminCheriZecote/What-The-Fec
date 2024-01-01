@@ -8,4 +8,4 @@ ac	Achats	3	20210131	401000	Fournisseurs divers	401IND	Indeed	9659468427	2021013
 ac	Achats	3	20210131	623100	Annonces et insertions			9659468427	20210131	Indeed Ireland Operations 39458199	261,48	0,00			20220401		
 ac	Achats	4	20210101	401000	Fournisseurs divers	401DIV	Fournisseurs divers	3213	20210101	MASQUES PRO	0,00	1360,96	J	20210101	20220401		
 ac	Achats	4	20210100	606300	Fournit. entretien & petit equip.			3213	20210101	MASQUES PRO	1290,00	0,00			20220401		
-ac	Achats	4	20210101	445660	Tva déductible sur autres biens et services			3213	20210101	MASQUES PRO	70,96	0,00			20220401		
+z	Achats	4	20210101	445660	Tva déductible sur autres biens et services			3213	20210101	MASQUES PRO	70,96	0,00			20220401		

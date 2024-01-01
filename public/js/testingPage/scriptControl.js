@@ -1,14 +1,6 @@
 
 
 const scriptControl = {
-        //
-        // scriptControl : triage num piece
-        // 1. recherche des numéro de piece vide
-        // 2. recherche des pieces isolées
-        // 3. control des dates entre ecritureDate et pieceDate
-        // 4. control des dates sur la meme piece
-        // 5. déséquilibre débit crédit
-
         // code couleur :
         // ligne error couleur fff1f2f4
 
@@ -16,8 +8,15 @@ const scriptControl = {
         // bleu : dates
         // violet : deb/cred
 
-    sortByNumPiece: () => {
-        // sheetJs
+    sortData: (protoBody) => {
+        protoBody.sort((a, b) => { 
+            if (a[0] === b[0]) {
+                return a[2] - b[2];
+            } else {
+                return a[0].localeCompare(b[0]);
+            }
+        } );
+        return protoBody;
     },
 
     searchEmptyNumPiece: (ws) => {
@@ -108,10 +107,33 @@ const scriptControl = {
     },
 
     checkSelfDatesPiece: () => {
-
+        
     },
-    checkBalancePiece: (ws) => {
 
+    checkBalancePiece: (body, ws2) => {
+        const objectPieces = {};
+
+        body.forEach(([JournalCode, JournalLib, EcritureNum, EcritureDate, CompteNum, CompteLib, CompAuxNum, CompAuxLib, PieceRef, PieceDate, EcritureLib, Debit, Credit, EcritureLet, DateLet, ValidDate, Montantdevise, Idevise]) => {
+            if (objectPieces.hasOwnProperty(`${JournalCode}${EcritureNum}`)) {
+                objectPieces[`${JournalCode}${EcritureNum}`][2] += Debit;
+                objectPieces[`${JournalCode}${EcritureNum}`][3] += Credit;
+                objectPieces[`${JournalCode}${EcritureNum}`][4] = objectPieces[`${JournalCode}${EcritureNum}`][2] - objectPieces[`${JournalCode}${EcritureNum}`][3];
+
+            } else {
+                objectPieces[`${JournalCode}${EcritureNum}`] = [JournalCode, EcritureNum, Debit, Credit, Debit - Credit]
+            }
+        });
+
+        console.log("test Obj : ", objectPieces);
+
+        const pieces = Object.values(objectPieces);
+
+        const unbalancedPieces = pieces.filter(piece => piece[4] !== 0);
+
+        console.log("Le tableau des pieces est :", pieces);
+        unbalancedPieces.unshift(['JournalCode', 'EcritureNum', 'Debit', 'Credit', 'Ecarts'])
+        console.log("Le tableau des pieces déséquilibrées est :", unbalancedPieces);
+        ws2.addRows(unbalancedPieces);
     }
 
 }

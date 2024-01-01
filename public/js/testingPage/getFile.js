@@ -38,9 +38,42 @@ const file = {
                     const ws = wb.addWorksheet('Feuille1');
 
                     const lines = textContent.split('\n');
+                    // console.log(lines)
                     const data = lines.map(line => line.split('\t'));
-                    const body = data.slice(1)
-                    console.log("Body :", body);
+                    const header = lines[0];
+                    const protoBody = data.slice(1);
+                    console.log("Body :", protoBody);
+
+                    const body = protoBody.map( line => {
+                        const modifiedLine = [...line];
+                        modifiedLine[11] = parseInt(modifiedLine[11]);
+                        modifiedLine[12] = parseInt(modifiedLine[12]);
+                        return modifiedLine;
+                    })
+
+                    console.log("body converti est : ", body);
+
+                    // const pieces = {};
+
+                    // body.forEach(([JournalCode, JournalLib, EcritureNum, EcritureDate, CompteNum, CompteLib, CompAuxNum, CompAuxLib, PieceRef, PieceDate, EcritureLib, Debit, Credit, EcritureLet, DateLet, ValidDate, Montantdevise, Idevise]) => {
+                    //     if (pieces.hasOwnProperty(`${JournalCode}${EcritureNum}`)) {
+                    //         pieces[`${JournalCode}${EcritureNum}`][2] += Debit;
+                    //         pieces[`${JournalCode}${EcritureNum}`][3] += Credit;
+                    //     } else {
+                    //         pieces[`${JournalCode}${EcritureNum}`] = [JournalCode, EcritureNum, Debit, Credit]
+                    //     }
+                    // });
+
+                    // const arrayPieces = Object.values(pieces);
+
+                    // console.log("Le tableau des pieces est :", arrayPieces)
+
+
+
+
+                    
+                    
+                    
                     
                     // const worksheet = XLSX.utils.aoa_to_sheet(data);
                     // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
@@ -48,15 +81,17 @@ const file = {
 
                     // Ajouter des données à la feuille de calcul
                     ws.addRows(body);
-
-                    // console.log(ws._rows)
-
-                    // console.log(ws._rows[0]._cells)
-
-                    // console.log(ws._rows[0]._cells[2]._value.value) // num pièce
+                    
 
                     
 
+                    
+
+                    
+
+                    
+
+                    
                     // ...
                     // Enregistrez le fichier Excel
                     // const buffer = await wb.xlsx.writeBuffer();
@@ -136,22 +171,26 @@ const file = {
         // scriptControl : spérateur point virgule
 
         const wb = new ExcelJS.Workbook();
-        const ws = wb.addWorksheet('Feuille1');
+        const ws = wb.addWorksheet('Fichier Control');
+        const ws2 = wb.addWorksheet('Debit Credit');
         const lines = textFile.split('\n');
         const data = lines.map(line => line.split('\t'));
         const header = data[0];
-        const body = data.slice(1);
+        const protoBody = data.slice(1);
 
         // triage par Num pièce et code journal
-        body.sort((a, b) => { 
-            if (a[0] === b[0]) {
-                return a[2] - b[2];
-            } else {
-                return a[0].localeCompare(b[0]);
-            }
-        } );
+        scriptControl.sortData(protoBody);
+
+        const body = protoBody.map( line => {
+            const modifiedLine = [...line];
+            modifiedLine[11] = parseInt(modifiedLine[11]);
+            modifiedLine[12] = parseInt(modifiedLine[12]);
+            return modifiedLine;
+        });
+
         // body.unshift(header);
         ws.addRows(body);
+        
 
         // 1. recherche des numéro de piece vide
         scriptControl.searchEmptyNumPiece(ws);
@@ -162,11 +201,12 @@ const file = {
         // 3. control des dates entre ecritureDate et pieceDate
         scriptControl.checkDatesColumns(ws);
 
-        // 4. control des dates sur la meme piece
-        // 5. différence code journal sur meme piece
+        // control des dates sur la meme piece
 
         // 6. déséquilibre débit crédit
-        // scriptControl.checkBalancePiece(ws);
+        scriptControl.checkBalancePiece(body, ws2);
+
+        ws.addRows(header);
 
         const buffer = await wb.xlsx.writeBuffer();
         saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `WTFEC-${nameFile}.xlsx`);
