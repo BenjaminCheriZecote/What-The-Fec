@@ -42,7 +42,7 @@ const file = {
                     const data = lines.map(line => line.split('\t'));
                     const header = lines[0];
                     const protoBody = data.slice(1);
-                    console.log("Body :", protoBody);
+                    
 
                     const body = protoBody.map( line => {
                         const modifiedLine = [...line];
@@ -51,27 +51,6 @@ const file = {
                         return modifiedLine;
                     })
 
-                    console.log("body converti est : ", body);
-
-                    // const pieces = {};
-
-                    // body.forEach(([JournalCode, JournalLib, EcritureNum, EcritureDate, CompteNum, CompteLib, CompAuxNum, CompAuxLib, PieceRef, PieceDate, EcritureLib, Debit, Credit, EcritureLet, DateLet, ValidDate, Montantdevise, Idevise]) => {
-                    //     if (pieces.hasOwnProperty(`${JournalCode}${EcritureNum}`)) {
-                    //         pieces[`${JournalCode}${EcritureNum}`][2] += Debit;
-                    //         pieces[`${JournalCode}${EcritureNum}`][3] += Credit;
-                    //     } else {
-                    //         pieces[`${JournalCode}${EcritureNum}`] = [JournalCode, EcritureNum, Debit, Credit]
-                    //     }
-                    // });
-
-                    // const arrayPieces = Object.values(pieces);
-
-                    // console.log("Le tableau des pieces est :", arrayPieces)
-
-
-
-
-                    
                     
                     
                     
@@ -81,15 +60,6 @@ const file = {
 
                     // Ajouter des données à la feuille de calcul
                     ws.addRows(body);
-                    
-
-                    
-
-                    
-
-                    
-
-                    
 
                     
                     // ...
@@ -190,18 +160,15 @@ const file = {
 
         // body.unshift(header);
         ws.addRows(body);
-        
 
         // 1. recherche des numéro de piece vide
         scriptControl.searchEmptyNumPiece(ws);
 
         // 2. recherche des pieces isolées
-        scriptControl.searchAlonePiece(ws);
+        scriptControl.searchAlonePieceIsolateDate(ws);
 
         // 3. control des dates entre ecritureDate et pieceDate
         scriptControl.checkDatesColumns(ws);
-
-        // control des dates sur la meme piece
 
         // 6. déséquilibre débit crédit
         scriptControl.checkBalancePiece(body, ws2);

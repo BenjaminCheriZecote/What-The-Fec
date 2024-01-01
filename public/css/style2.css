@@ -37,11 +37,7 @@
     text-decoration: none;
 }
 
-
-
 #main-test {
-    border:1px white solid;
-    /* background-color: white; */
     opacity: initial;
     padding: 2rem;
 }

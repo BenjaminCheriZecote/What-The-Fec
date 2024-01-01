@@ -42,13 +42,67 @@ const scriptControl = {
         return messageEmptyErrorPiece;
     },
 
-    searchAlonePiece: (ws) => {
-        for (let index = 1; index < ws._rows.length-1; index++) {
+    searchAlonePieceIsolateDate: (ws) => {
 
+        if (ws._rows[0]._cells[0]._value.value !== ws._rows[1]._cells[0]._value.value) {
+           console.log("Premieres ligne, code journal pièce isolées");
+            ws._rows[0].fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFF1F2F4' }
+            };
+
+            ws._rows[0]._cells[2].font = {
+                color: { argb: 'ffe74141' },
+                bold: true
+            };
+            ws._rows[0]._cells[0].font = {
+                color: { argb: 'ffe74141' },
+                bold: true
+            };
+
+        };
+
+        if (ws._rows[ws._rows.length-1]._cells[0]._value.value !== ws._rows[ws._rows.length-2]._cells[0]._value.value) {
+            console.log("Dernière ligne, code journal pièce isolées");
+
+            ws._rows[ws._rows.length-1].fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFF1F2F4' }
+            };
+
+            ws._rows[ws._rows.length-1]._cells[2].font = {
+                color: { argb: 'ffe74141' },
+                bold: true
+            };
+            ws._rows[ws._rows.length-1]._cells[0].font = {
+                color: { argb: 'ffe74141' },
+                bold: true
+            };
+
+        } else if (ws._rows[ws._rows.length-1]._cells[2]._value.value !== ws._rows[ws._rows.length-2]._cells[2]._value.value) {
+            console.log("Dernière ligne, pièce isolées Num pièce");
+            ws._rows[ws._rows.length-1].fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFF1F2F4' }
+            };
+
+            ws._rows[ws._rows.length-1]._cells[2].font = {
+                color: { argb: 'ffe74141' },
+                bold: true
+            };
+        };
+
+        for (let index = 1; index < ws._rows.length-1; index++) {
+            // si on est dans le meme code journal
             if (ws._rows[index-1]._cells[0]._value.value === ws._rows[index]._cells[0]._value.value) {
-                // console.log(`Comparaison de ligne ${index}. Valeur : ${ws._rows[index]._cells[2]._value.value} \n 
-                // Ligne précédente : ${index-1} valeur ${ws._rows[index-1]._cells[2]._value.value} \n 
-                // Ligne suivante ${index+1} valeur ${ws._rows[index+1]._cells[2]._value.value}`);
+                
+                console.log(`Comparaison de la ligne ${index}. Valeur : ${ws._rows[index]._cells[2]._value.value} \n 
+                Ligne précédente ${index-1} : valeur ${ws._rows[index-1]._cells[2]._value.value} \n 
+                Ligne suivante ${index+1} : valeur ${ws._rows[index+1]._cells[2]._value.value}`);
+                // si p-1 !== p && p+1 !== p
                 if (ws._rows[index-1]._cells[2]._value.value !== ws._rows[index]._cells[2]._value.value && ws._rows[index+1]._cells[2]._value.value !== ws._rows[index]._cells[2]._value.value) {
                     ws._rows[index].fill = {
                         type: 'pattern',
@@ -60,6 +114,22 @@ const scriptControl = {
                         bold: true
                     };
                 };
+                //si p-1 === p
+                if (ws._rows[index-1]._cells[2]._value.value === ws._rows[index]._cells[2]._value.value) {
+                    // si d-1 !== d
+                    if (ws._rows[index-1]._cells[3]._value.value !== ws._rows[index]._cells[3]._value.value) {
+                        ws._rows[index].fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFF1F2F4' }
+                        };
+                        ws._rows[index]._cells[3].font = {
+                            color: { argb: 'FF0808CD' },
+                            bold: true
+                        };
+                    };
+                }
+
             } else if (ws._rows[index-1]._cells[0]._value.value !== ws._rows[index]._cells[0]._value.value && ws._rows[index+1]._cells[0]._value.value !== ws._rows[index]._cells[0]._value.value) {
                 ws._rows[index].fill = {
                     type: 'pattern',
@@ -67,9 +137,6 @@ const scriptControl = {
                     fgColor: { argb: 'FFF1F2F4' }
                 };
 
-                ws._rows[index].font = {
-                    bold: true
-                };
                 ws._rows[index]._cells[2].font = {
                     color: { argb: 'ffe74141' },
                     bold: true
@@ -78,8 +145,6 @@ const scriptControl = {
                     color: { argb: 'ffe74141' },
                     bold: true
                 };
-            } else {
-                console.log("Changement de code journal");
             }
         }
     },
@@ -107,7 +172,7 @@ const scriptControl = {
     },
 
     checkSelfDatesPiece: () => {
-        
+
     },
 
     checkBalancePiece: (body, ws2) => {
@@ -124,15 +189,10 @@ const scriptControl = {
             }
         });
 
-        console.log("test Obj : ", objectPieces);
-
         const pieces = Object.values(objectPieces);
 
         const unbalancedPieces = pieces.filter(piece => piece[4] !== 0);
-
-        console.log("Le tableau des pieces est :", pieces);
-        unbalancedPieces.unshift(['JournalCode', 'EcritureNum', 'Debit', 'Credit', 'Ecarts'])
-        console.log("Le tableau des pieces déséquilibrées est :", unbalancedPieces);
+        unbalancedPieces.unshift(['JournalCode', 'EcritureNum', 'Debit', 'Credit', 'Ecarts']);
         ws2.addRows(unbalancedPieces);
     }
 
