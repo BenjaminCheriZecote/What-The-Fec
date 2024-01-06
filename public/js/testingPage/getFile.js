@@ -1,13 +1,10 @@
 import scriptControl from "./scriptControl.js";
 
-
-
 const file = {
     
     getFile: () => {
         const inputFileElement = document.querySelector('#file');
         const formElement = document.querySelector('#main-testingPage-form');
-        // const buttonFormElement = document.querySelector('#main-testingPage-form--btn');
         
         const clientListFEC = []
         
@@ -16,32 +13,41 @@ const file = {
             inputFileElement.click();
         });
         inputFileElement.addEventListener('change', () => {
-            const pElement = document.querySelector('.testA');
+            const pElementResponse = document.querySelector('.errorTypeFile');
+
+            const asideElement = document.querySelector(".main-testingPage-section-report");
+            asideElement.classList.remove('hidden');
+            const pElement = document.querySelector('.main-testingPage-section-report-feedback');
+
             const clientFile = inputFileElement.files[0];
             clientListFEC.push(clientFile);
             console.log('Sélectionné?', clientFile);
             console.log('Tableau client', clientListFEC);
 
             if (clientFile.type === "text/plain") {
+                pElementResponse.textContent = "";
+
 
                 const reader = new FileReader();
                 reader.addEventListener('load', async () => {
                     const textContent = reader.result; // textContent contient la string du fichier txt
                     pElement.style.height = '10rem';
-                    pElement.innerText = textContent;
+                    // pElement.innerText = textContent;
 
-                    file.createListFile(clientFile.name, textContent);
+                    // file.createListFile(clientFile.name, textContent);
                     
                     // const workbook = XLSX.utils.book_new();
 
                     const wb = new ExcelJS.Workbook();
-                    const ws = wb.addWorksheet('Feuille1');
+                    const ws = wb.addWorksheet('Fichier Control');
+                    const ws2 = wb.addWorksheet('Debit Credit');
 
                     const lines = textContent.split('\n');
-                    // console.log(lines)
                     const data = lines.map(line => line.split('\t'));
                     const header = lines[0];
                     const protoBody = data.slice(1);
+
+                    scriptControl.sortData(protoBody);
                     
 
                     const body = protoBody.map( line => {
@@ -49,34 +55,59 @@ const file = {
                         modifiedLine[11] = parseInt(modifiedLine[11]);
                         modifiedLine[12] = parseInt(modifiedLine[12]);
                         return modifiedLine;
-                    })
+                    });
 
-                    
+                    // Ajouter des données à la feuille de calcul
+                    ws.addRows(body);
+
+                    // 1. recherche des numéro de piece vide
+                    // scriptControl.searchEmptyNumPiece(ws);
+
+                    // 2. recherche des pieces isolées
+                    // scriptControl.searchAlonePieceIsolateDate(ws);
+
+                    // 3. control des dates entre ecritureDate et pieceDate
+                    // scriptControl.checkDatesColumns(ws);
+
+                    // 6. déséquilibre débit crédit
+                    // scriptControl.checkBalancePiece(body, ws2);
                     
                     
                     // const worksheet = XLSX.utils.aoa_to_sheet(data);
                     // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
 
+                    // InnerHtml
+                    // 1. conformité de la structure du fec
+                    // 2. aperçu des résultats
 
-                    // Ajouter des données à la feuille de calcul
-                    ws.addRows(body);
+                    pElement.innerText = `
 
-                    
-                    // ...
-                    // Enregistrez le fichier Excel
-                    // const buffer = await wb.xlsx.writeBuffer();
-                    // saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'WhatTheFECT2.xlsx');
+                    ${scriptControl.searchEmptyNumPiece(ws)}\n
+
+                    ${scriptControl.searchAlonePieceIsolateDate(ws)}\n
+
+                    ${scriptControl.checkDatesColumns(ws)}\n
+
+                    ${scriptControl.checkBalancePiece(body, ws2)}\n
+                    `;
+
+
+                    file.createListFile(clientFile.name, wb);
+
 
                 });
                 reader.readAsText(clientFile); // A remplacer par l'aperçu du fichier excel  
 
             } else {
-                console.log('Error type file');
+                const pElementResponse = document.querySelector('.errorTypeFile');
+                pElementResponse.style.color = "red";
+                pElementResponse.innerText = "Veuillez sélectionner un fichier de type .txt.";
+                
             }
         });
     },
 
-    createListFile: (nameFile, textFile) => {
+    createListFile: (nameFile, wb) => {
         const sectionParentElement = document.querySelector('.progress-area');
 
         const liElement = document.createElement('li');
@@ -110,7 +141,7 @@ const file = {
         buttonUploaderElement.textContent = 'Télécharger';
         buttonUploaderElement.classList.add('btn');
 
-        file.listenerButtonUploader(buttonUploaderElement, textFile, nameFile); // écoute les clicks sur les bouton Télécharger
+        file.listenerButtonUploader(buttonUploaderElement, nameFile, wb); // écoute les clicks sur les bouton Télécharger
 
         sectionParentElement.appendChild(liElement);
 
@@ -127,53 +158,51 @@ const file = {
         divProgressBarElement.appendChild(divProgressElement);
     },
 
-    listenerButtonUploader: (buttonElement, textFile, nameFile) => {
+    listenerButtonUploader: (buttonElement, nameFile, wb) => {
         buttonElement.addEventListener('click', () => {
-            file.uploadExcelFileResult(textFile, nameFile)
+            file.uploadExcelFileResult(nameFile, wb)
         });
     },
 
-    uploadExcelFileResult: async (textFile, nameFile) => {
+    uploadExcelFileResult: async (nameFile, wb) => {
         // const workbook = XLSX.utils.book_new();
         // const worksheet = XLSX.utils.aoa_to_sheet(data);
         // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
 
         // scriptControl : spérateur point virgule
 
-        const wb = new ExcelJS.Workbook();
-        const ws = wb.addWorksheet('Fichier Control');
-        const ws2 = wb.addWorksheet('Debit Credit');
-        const lines = textFile.split('\n');
-        const data = lines.map(line => line.split('\t'));
-        const header = data[0];
-        const protoBody = data.slice(1);
+        // const wb = new ExcelJS.Workbook();
+        // const ws = wb.addWorksheet('Fichier Control');
+        // const ws2 = wb.addWorksheet('Debit Credit');
+        // const lines = textFile.split('\n');
+        // const data = lines.map(line => line.split('\t'));
+        // const header = data[0];
+        // const protoBody = data.slice(1);
 
         // triage par Num pièce et code journal
-        scriptControl.sortData(protoBody);
+        // scriptControl.sortData(protoBody);
 
-        const body = protoBody.map( line => {
-            const modifiedLine = [...line];
-            modifiedLine[11] = parseInt(modifiedLine[11]);
-            modifiedLine[12] = parseInt(modifiedLine[12]);
-            return modifiedLine;
-        });
+        // const body = protoBody.map( line => {
+        //     const modifiedLine = [...line];
+        //     modifiedLine[11] = parseInt(modifiedLine[11]);
+        //     modifiedLine[12] = parseInt(modifiedLine[12]);
+        //     return modifiedLine;
+        // });
 
         // body.unshift(header);
-        ws.addRows(body);
+        // ws.addRows(body);
 
-        // 1. recherche des numéro de piece vide
-        scriptControl.searchEmptyNumPiece(ws);
+        // // 1. recherche des numéro de piece vide
+        // scriptControl.searchEmptyNumPiece(ws);
 
-        // 2. recherche des pieces isolées
-        scriptControl.searchAlonePieceIsolateDate(ws);
+        // // 2. recherche des pieces isolées
+        // scriptControl.searchAlonePieceIsolateDate(ws);
 
-        // 3. control des dates entre ecritureDate et pieceDate
-        scriptControl.checkDatesColumns(ws);
+        // // 3. control des dates entre ecritureDate et pieceDate
+        // scriptControl.checkDatesColumns(ws);
 
-        // 6. déséquilibre débit crédit
-        scriptControl.checkBalancePiece(body, ws2);
-
-        ws.addRows(header);
+        // // 6. déséquilibre débit crédit
+        // scriptControl.checkBalancePiece(body, ws2);
 
         const buffer = await wb.xlsx.writeBuffer();
         saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `WTFEC-${nameFile}.xlsx`);
