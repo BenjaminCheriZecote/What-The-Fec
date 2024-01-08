@@ -1,4 +1,5 @@
 import scriptControl from "./scriptControl.js";
+import scriptControlFile from "./report.js";
 
 const file = {
     
@@ -17,7 +18,9 @@ const file = {
 
             const asideElement = document.querySelector(".main-testingPage-section-report");
             asideElement.classList.remove('hidden');
-            const pElement = document.querySelector('.main-testingPage-section-report-feedback');
+            const divElementFeedbackTitle = document.querySelector('.main-testingPage-section-report-feedback')
+            const divElementFeedbackStructureFile = document.querySelector('.main-testingPage-section-report-feedback1');
+            const divElementFeedbackStructurePieces = document.querySelector('.main-testingPage-section-report-feedback2');
 
             const clientFile = inputFileElement.files[0];
             clientListFEC.push(clientFile);
@@ -26,15 +29,15 @@ const file = {
 
             if (clientFile.type === "text/plain") {
                 pElementResponse.textContent = "";
+                divElementFeedbackTitle.innerHTML = "";
+                divElementFeedbackStructureFile.innerHTML = "";
+                divElementFeedbackStructurePieces.innerHTML = "";
 
 
                 const reader = new FileReader();
                 reader.addEventListener('load', async () => {
                     const textContent = reader.result; // textContent contient la string du fichier txt
-                    pElement.style.height = '10rem';
                     // pElement.innerText = textContent;
-
-                    // file.createListFile(clientFile.name, textContent);
                     
                     // const workbook = XLSX.utils.book_new();
 
@@ -44,7 +47,11 @@ const file = {
 
                     const lines = textContent.split('\n');
                     const data = lines.map(line => line.split('\t'));
-                    const header = lines[0];
+                    const header = data[0];
+
+                    console.log(data);
+                
+
                     const protoBody = data.slice(1);
 
                     scriptControl.sortData(protoBody);
@@ -59,41 +66,28 @@ const file = {
 
                     // Ajouter des données à la feuille de calcul
                     ws.addRows(body);
-
-                    // 1. recherche des numéro de piece vide
-                    // scriptControl.searchEmptyNumPiece(ws);
-
-                    // 2. recherche des pieces isolées
-                    // scriptControl.searchAlonePieceIsolateDate(ws);
-
-                    // 3. control des dates entre ecritureDate et pieceDate
-                    // scriptControl.checkDatesColumns(ws);
-
-                    // 6. déséquilibre débit crédit
-                    // scriptControl.checkBalancePiece(body, ws2);
-                    
-                    
                     // const worksheet = XLSX.utils.aoa_to_sheet(data);
                     // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
 
-                    // InnerHtml
-                    // 1. conformité de la structure du fec
-                    // 2. aperçu des résultats
 
-                    pElement.innerText = `
+                    divElementFeedbackTitle.insertAdjacentHTML("beforeend", `
+                    <h2 class="main-testingPage-section-report--h2">Compte rendu ${clientFile.name}</h2>
+                    `);
 
-                    ${scriptControl.searchEmptyNumPiece(ws)}\n
+                    divElementFeedbackStructureFile.insertAdjacentHTML("beforeend", `
+                    <p class="feedbackTitle">Structure du fichier :</p>
+                    <p>${scriptControlFile.headerColumns(header)}</p>
+                    `);
 
-                    ${scriptControl.searchAlonePieceIsolateDate(ws)}\n
-
-                    ${scriptControl.checkDatesColumns(ws)}\n
-
-                    ${scriptControl.checkBalancePiece(body, ws2)}\n
-                    `;
-
+                    divElementFeedbackStructurePieces.insertAdjacentHTML("beforeend", `
+                    <p class="feedbackTitle">Structure des écritures :</p>
+                    <p>${scriptControl.searchEmptyNumPiece(ws)}</p>
+                    <p>${scriptControl.searchAlonePieceIsolateDate(ws)}</p>
+                    <p>${scriptControl.checkDatesColumns(ws)}</p>
+                    <p>${scriptControl.checkBalancePiece(body, ws2)}</p>
+                    `);
 
                     file.createListFile(clientFile.name, wb);
-
 
                 });
                 reader.readAsText(clientFile); // A remplacer par l'aperçu du fichier excel  
@@ -168,41 +162,6 @@ const file = {
         // const workbook = XLSX.utils.book_new();
         // const worksheet = XLSX.utils.aoa_to_sheet(data);
         // XLSX.utils.book_append_sheet(workbook, worksheet, 'Feuille1');
-
-        // scriptControl : spérateur point virgule
-
-        // const wb = new ExcelJS.Workbook();
-        // const ws = wb.addWorksheet('Fichier Control');
-        // const ws2 = wb.addWorksheet('Debit Credit');
-        // const lines = textFile.split('\n');
-        // const data = lines.map(line => line.split('\t'));
-        // const header = data[0];
-        // const protoBody = data.slice(1);
-
-        // triage par Num pièce et code journal
-        // scriptControl.sortData(protoBody);
-
-        // const body = protoBody.map( line => {
-        //     const modifiedLine = [...line];
-        //     modifiedLine[11] = parseInt(modifiedLine[11]);
-        //     modifiedLine[12] = parseInt(modifiedLine[12]);
-        //     return modifiedLine;
-        // });
-
-        // body.unshift(header);
-        // ws.addRows(body);
-
-        // // 1. recherche des numéro de piece vide
-        // scriptControl.searchEmptyNumPiece(ws);
-
-        // // 2. recherche des pieces isolées
-        // scriptControl.searchAlonePieceIsolateDate(ws);
-
-        // // 3. control des dates entre ecritureDate et pieceDate
-        // scriptControl.checkDatesColumns(ws);
-
-        // // 6. déséquilibre débit crédit
-        // scriptControl.checkBalancePiece(body, ws2);
 
         const buffer = await wb.xlsx.writeBuffer();
         saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `WTFEC-${nameFile}.xlsx`);

@@ -4,8 +4,7 @@
     font-family: 'Poppins', sans-serif;
     background-color: #f1f2f4cc;
     background: linear-gradient(#f1f2f4cc, #ffffff);
-    /* padding:0rem 5rem; */
-    /* background-image: ; */
+    /* height: 100%; */
 }
 
 .header_section {
@@ -143,15 +142,9 @@
 
   .btn {
     font-family: 'Poppins', sans-serif;
-    /* padding: 1rem; */
-    /* font-weight: 700; */
     background: rgb(255, 255, 255);
-    /* color: rgb(85, 13, 13); */
     border-radius: .3rem;
-    /* border-bottom: 2px solid rgb(85, 13, 13);
-    border-right: 2px solid rgb(85, 13, 13);
-    border-top: 2px solid white;
-    border-left: 2px solid white; */
+    
     border:1px black solid;
     transition-duration: 1s;
     transition-property: border-top, border-left, border-bottom, border-right, box-shadow;
@@ -166,6 +159,22 @@
     box-shadow: rgba(85, 13, 13, 0.4) 5px 5px, rgba(85, 13, 13, 0.3) 10px 10px, rgba(85, 13, 13, 0.2) 15px 15px;
    }
 
+
+   .main-testingPage-section-report--h2 {
+    font-size: 1.5rem;
+   }
+
+   .main-testingPage-section-report--h2, .main-testingPage-section-report-feedback1, .main-testingPage-section-report-feedback2 {
+    padding:1rem;
+   }
+
+   .main-testingPage-section-report-feedback2 p, .main-testingPage-section-report-feedback1 p {
+    margin:0.5rem 0rem;
+   }
+
+   .feedbackTitle {
+    text-decoration: underline;
+   }
 
    .footer {
     text-align: center;

@@ -39,7 +39,7 @@ const scriptControl = {
                 rowsError.push(rowNumber);
             }
         });
-        const messageError = `Vous avez des écritures sans numéro de pièces à la ligne : ${rowsError}`;
+        const messageError = `Vous avez des écritures sans numéro de pièces à la ligne : </br> ${rowsError.join('</br>')}`;
         console.log(messageError);
         return messageError;
     },
@@ -158,7 +158,7 @@ const scriptControl = {
 
         const rowsErrorIsolatePiecesSorted = [...new Set(rowsErrorIsolatePieces)];
 
-        const messageError = `Vous avez une ligne d'écriture isolé à la ligne : ${rowsErrorIsolatePiecesSorted} \n\n\nVous avez une date d'écriture différente sur une même pièce à la ligne : ${rowsErrorIsolateDates}`
+        const messageError = `Vous avez une ligne d'écriture isolé à la ligne : </br> ${rowsErrorIsolatePiecesSorted.join('</br>')} </br></br>Vous avez une date d'écriture différente sur une même pièce à la ligne : </br>${rowsErrorIsolateDates.join('</br>')}`
         console.log(messageError);
         return messageError;
     },
@@ -186,7 +186,7 @@ const scriptControl = {
             }
         })
 
-        const messageError = `Les dates des colonnes EcritureDate et PieceDate ne correspondent pas à la ligne : ${rowsError}`;
+        const messageError = `Les dates des colonnes EcritureDate et PieceDate ne correspondent pas à la ligne : </br>${rowsError.join('</br>')}`;
         console.log(messageError);
         return messageError;
     },
@@ -219,7 +219,7 @@ const scriptControl = {
         unbalancedPieces.unshift(['Ligne', 'JournalCode', 'EcritureNum', 'Debit', 'Credit', 'Ecarts']);
         ws2.addRows(unbalancedPieces);
         
-        const messageError = `Vous avez des pièces déséquilibrées aux lignes : ${rowsError}`;
+        const messageError = `Vous avez des pièces déséquilibrées aux lignes : </br>${rowsError.join('</br>')}`;
         console.log(messageError);
         return messageError;
     }
